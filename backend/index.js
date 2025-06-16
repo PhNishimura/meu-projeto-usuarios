@@ -16,13 +16,13 @@ const pool = new Pool({
   port: 5432,
 });
 
-pool.query(\`
+pool.query(`
   CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE
   )
-\`).catch(console.error);
+`).catch(console.error);
 
 app.get('/api/users', async (req, res) => {
   try {
@@ -46,5 +46,5 @@ app.post('/api/users', async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(\`Backend rodando em http://localhost:\${port}\`);
+  console.log(`Backend rodando em http://localhost:${port}`);
 });
