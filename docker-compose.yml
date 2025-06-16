@@ -1,18 +1,21 @@
 version: '3.8'
 services:
   backend:
-    build: ./backend
-    image: minha_stack_backend
+    # A linha 'build' foi removida
+    image: pedrobachaalani1701/meu-projeto-backend:1.0 # Modificada
     ports:
       - "3000:3000"
     networks:
       - app-network
     depends_on:
       - db
+    environment:
+      # Adicionado para garantir que o backend espere o DB
+      - DATABASE_URL=postgres://user:password@db:5432/postgres
 
   frontend:
-    build: ./frontend
-    image: minha_stack_frontend
+    # A linha 'build' foi removida
+    image: pedrobachaalani1701/meu-projeto-frontend:1.0 # Modificada
     ports:
       - "8080:80"
     networks:
@@ -33,3 +36,4 @@ volumes:
 
 networks:
   app-network:
+    driver: overlay # Especificar o driver overlay é uma boa prática
