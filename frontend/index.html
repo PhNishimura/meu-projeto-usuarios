@@ -1,112 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Cadastro de Usuários</title>
+  <meta charset="UTF-8">
+  <title>Trabalho Faculdade - Docker Swarm</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #667eea, #764ba2);
-      color: white;
-      padding: 40px;
-      max-width: 600px;
-      margin: auto;
-    }
-    h1 {
-      text-align: center;
-    }
-    form {
-      background: rgba(0,0,0,0.3);
-      padding: 20px;
-      border-radius: 8px;
-      margin-bottom: 30px;
-    }
-    input, button {
-      padding: 10px;
-      margin: 5px 0;
-      width: 100%;
-      border: none;
-      border-radius: 4px;
-    }
-    input {
-      font-size: 1em;
-    }
-    button {
-      background: #5a67d8;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    table {
-      width: 100%;
-      background: rgba(0,0,0,0.3);
-      border-collapse: collapse;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid #444;
-      text-align: left;
-    }
-    th {
-      background: #5a67d8;
-    }
+    body { font-family: sans-serif; background-color: #282a36; color: #f8f8f2; text-align: center; padding-top: 50px; }
+    h1 { color: #50fa7b; }
+    button { background-color: #bd93f9; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    #data-container { background-color: #44475a; margin: 30px auto; padding: 20px; border-radius: 8px; max-width: 600px; text-align: left; }
+    pre { white-space: pre-wrap; word-wrap: break-word; }
   </style>
 </head>
 <body>
-  <h1>Cadastro de Usuários</h1>
-  <form id="userForm">
-    <input type="text" id="name" placeholder="Nome" required />
-    <input type="email" id="email" placeholder="Email" required />
-    <button type="submit">Cadastrar</button>
-  </form>
 
-  <table id="usersTable" style="display:none">
-    <thead>
-      <tr><th>ID</th><th>Nome</th><th>Email</th></tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+  <h1>Aplicação Distribuída com Docker Swarm</h1>
+  <p>Clique no botão para buscar dados do serviço de backend.</p>
+  <button id="fetch-btn">Buscar Dados</button>
+
+  <div id="data-container" style="display:none;">
+    <h2>Dados Recebidos do Backend:</h2>
+    <pre id="data-pre"></pre>
+  </div>
 
   <script>
-    const apiBase = `http://${window.location.hostname}:3000/api/users`;
-
-    async function fetchUsers() {
-      const res = await fetch(apiBase);
-      const users = await res.json();
-      const tbody = document.querySelector('#usersTable tbody');
-      tbody.innerHTML = '';
-      users.forEach(user => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${user.id}</td><td>${user.name}</td><td>${user.email}</td>`;
-        tbody.appendChild(tr);
-      });
-      document.getElementById('usersTable').style.display = users.length ? 'table' : 'none';
-    }
-
-    document.getElementById('userForm').addEventListener('submit', async e => {
-      e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      if (!name || !email) return alert('Preencha todos os campos.');
+    document.getElementById('fetch-btn').addEventListener('click', async () => {
+      const dataContainer = document.getElementById('data-container');
+      const dataPre = document.getElementById('data-pre');
+      
+      // Monta a URL da API do backend dinamicamente
+      const apiURL = `http://${window.location.hostname}:3000/data`;
 
       try {
-        const res = await fetch(apiBase, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name, email })
-        });
-        if (!res.ok) throw new Error('Erro no cadastro');
-        document.getElementById('name').value = '';
-        document.getElementById('email').value = '';
-        fetchUsers();
-      } catch {
-        alert('Erro ao cadastrar usuário');
+        const response = await fetch(apiURL);
+        if (!response.ok) {
+          throw new Error(`Erro na rede: ${response.statusText}`);
+        }
+        const data = await response.json();
+        
+        // Exibe os dados formatados
+        dataPre.textContent = JSON.stringify(data, null, 2);
+        dataContainer.style.display = 'block';
+
+      } catch (error) {
+        dataPre.textContent = `Falha ao buscar dados: ${error.message}`;
+        dataContainer.style.display = 'block';
       }
     });
-
-    fetchUsers();
   </script>
+
 </body>
 </html>

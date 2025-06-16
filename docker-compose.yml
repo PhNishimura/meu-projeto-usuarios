@@ -1,39 +1,22 @@
 version: '3.8'
+
 services:
   backend:
-    # A linha 'build' foi removida
-    image: pedrobachaalani1701/meu-projeto-backend:2.0 # Modificada
+    # ATENÇÃO: Substitua 'SEU_USUARIO_DOCKERHUB' pelo seu nome de usuário
+    image: SEU_USUARIO_DOCKERHUB/trabalho-backend:1.0
     ports:
       - "3000:3000"
     networks:
-      - app-network
-    depends_on:
-      - db
-    environment:
-      # Adicionado para garantir que o backend espere o DB
-      - DATABASE_URL=postgres://user:password@db:5432/postgres
+      - app-net
 
   frontend:
-    # A linha 'build' foi removida
-    image: pedrobachaalani1701/meu-projeto-frontend:2.0 # Modificada
+    # ATENÇÃO: Substitua 'SEU_USUARIO_DOCKERHUB' pelo seu nome de usuário
+    image: SEU_USUARIO_DOCKERHUB/trabalho-frontend:1.0
     ports:
       - "8080:80"
     networks:
-      - app-network
-
-  db:
-    image: postgres
-    environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-    volumes:
-      - db-data:/var/lib/postgresql/data
-    networks:
-      - app-network
-
-volumes:
-  db-data:
+      - app-net
 
 networks:
-  app-network:
-    driver: overlay # Especificar o driver overlay é uma boa prática
+  app-net:
+    driver: overlay
