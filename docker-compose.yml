@@ -2,7 +2,7 @@ version: '3.8'
 services:
   backend:
     # A linha 'build' foi removida
-    image: pedrobachaalani1701/meu-projeto-backend:1.0 # Modificada
+    image: pedrobachaalani1701/meu-projeto-backend:2.0 # Modificada
     ports:
       - "3000:3000"
     networks:
@@ -15,7 +15,7 @@ services:
 
   frontend:
     # A linha 'build' foi removida
-    image: pedrobachaalani1701/meu-projeto-frontend:1.0 # Modificada
+    image: pedrobachaalani1701/meu-projeto-frontend:2.0 # Modificada
     ports:
       - "8080:80"
     networks:

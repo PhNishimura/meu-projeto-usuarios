@@ -41,6 +41,8 @@ app.post('/api/users', async (req, res) => {
     const result = await pool.query('INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id, name, email', [name, email]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
+    // A LINHA ABAIXO FOI ADICIONADA
+    console.error('ERRO DETALHADO DO BANCO DE DADOS:', err);
     res.status(500).json({ error: 'Erro ao cadastrar usuário' });
   }
 });
