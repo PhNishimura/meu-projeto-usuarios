@@ -18,7 +18,10 @@ app.options('*', cors(corsOptions));
 
 // Rota principal para verificar se o backend está online
 app.get('/', (req, res) => {
-  res.json({ status: 'Backend está online e funcionando!' });
+  res.json({ 
+    status: 'Backend está online!',
+    versao: '4.0 - TESTE FINAL CORS' // Esta é a nossa "impressão digital"
+  });
 });
 
 // Rota que devolve alguns dados de exemplo
