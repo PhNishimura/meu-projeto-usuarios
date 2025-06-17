@@ -2,16 +2,16 @@ version: '3.8'
 
 services:
   backend:
-    # ATENÇÃO: Substitua 'SEU_USUARIO_DOCKERHUB' pelo seu nome de usuário
-    image: SEU_USUARIO_DOCKERHUB/trabalho-backend:1.0
+    # Substitua SEU_USUARIO e use a tag da ÚLTIMA imagem que você construiu
+    image: pedrobachaalani1701/trabalho-backend:4.0
     ports:
       - "3000:3000"
     networks:
       - app-net
 
   frontend:
-    # ATENÇÃO: Substitua 'SEU_USUARIO_DOCKERHUB' pelo seu nome de usuário
-    image: SEU_USUARIO_DOCKERHUB/trabalho-frontend:1.0
+    # Faça o mesmo para o frontend
+    image: pedrobachaalani1701/trabalho-frontend:1.0 # (O frontend não mudou, pode ser 1.0)
     ports:
       - "8080:80"
     networks:
