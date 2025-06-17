@@ -3,7 +3,18 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
-app.use(cors());
+// Configuração de CORS mais explícita
+const corsOptions = {
+  origin: '*', // Permite requisições de QUALQUER origem.
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+
+// Garante que as requisições OPTIONS (preflight) também recebam os headers de CORS
+app.options('*', cors(corsOptions));
 
 // Rota principal para verificar se o backend está online
 app.get('/', (req, res) => {
